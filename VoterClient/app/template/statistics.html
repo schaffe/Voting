@@ -1,0 +1,10 @@
+<div>
+    <div>
+        <table class="table">
+            <tr ng-repeat="s in stats | orderBy: 's.votes'">
+                <td>{{s.candidate.name + " " + s.candidate.surname}}</td>
+                <td>{{s.votes}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

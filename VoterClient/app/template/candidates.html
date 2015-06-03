@@ -1,0 +1,8 @@
+<h1>Candidates in </h1>
+<div>
+    <li ng-repeat="c in candidates">
+        <h3>{{c.name + " " + c.surname}}</h3>
+        <p>{{c.description}}</p>
+        <p><a class="bnt btn-default" role="button" ng-click="vote(c.id)">Vote</a> </p>
+    </li>
+</div>

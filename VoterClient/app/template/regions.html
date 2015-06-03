@@ -1,0 +1,13 @@
+<h1>Regions</h1>
+
+<div>
+<p>Total number of regions: {{regions.length}}</p>
+<ul>
+    <li ng-repeat="r in regions">
+        <h3>{{r.name}}</h3>
+        <p>{{r.code}}</p>
+        <p><a class="bnt btn-default" href="#/region/{{r.id}}" role="button">Candidates</a> </p>
+        <p><a class="bnt btn-default" href="#/stats/region/{{r.id}}" role="button">Statistics</a> </p>
+    </li>
+</ul>
+</div>
