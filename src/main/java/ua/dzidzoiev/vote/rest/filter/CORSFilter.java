@@ -1,4 +1,6 @@
-package ua.dzidzoiev.vote.util;
+package ua.dzidzoiev.vote.rest.filter;
+
+import ua.dzidzoiev.vote.rest.AuthResource;
 
 import java.io.IOException;
 
@@ -14,10 +16,12 @@ public class CORSFilter implements ContainerResponseFilter {
     public void filter(final ContainerRequestContext requestContext,
                        final ContainerResponseContext cres) throws IOException {
         cres.getHeaders().add("Access-Control-Allow-Origin", "*");
-        cres.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+        cres.getHeaders().add("Access-Control-Allow-Headers", AuthResource.SERVICE_KEY + ", " + AuthResource.AUTH_TOKEN);
+//        cres.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
         cres.getHeaders().add("Access-Control-Allow-Credentials", "true");
         cres.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         cres.getHeaders().add("Access-Control-Max-Age", "1209600");
+
     }
 
 }
