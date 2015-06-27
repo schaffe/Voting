@@ -1,5 +1,9 @@
 package ua.dzidzoiev.vote.rest;
 
+import ua.dzidzoiev.vote.rest.filter.Token;
+import ua.dzidzoiev.vote.rest.filter.TokenFree;
+
+import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -26,15 +30,22 @@ public interface AuthResourceProxy extends Serializable {
     @GET
     @Path("demo-get-method")
     @Produces(MediaType.APPLICATION_JSON)
+    @Token
     public Response demoGetMethod();
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response usecured();
 
     @POST
     @Path("demo-post-method")
     @Produces(MediaType.APPLICATION_JSON)
+    @Token
     public Response demoPostMethod();
 
     @POST
     @Path("logout")
+    @Token
     public Response logout(
             @Context HttpHeaders httpHeaders
     );

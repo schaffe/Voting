@@ -38,6 +38,11 @@ public class AuthResource implements AuthResourceProxy {
     }
 
     @Override
+    public Response usecured() {
+        return getNoCacheResponseBuilder(Response.Status.OK).entity("Executed unsecured").build();
+    }
+
+    @Override
     public Response demoPostMethod() {
         return getNoCacheResponseBuilder(Response.Status.ACCEPTED).entity("Executed demoPostMethod").build();
     }
