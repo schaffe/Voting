@@ -1,11 +1,13 @@
 package ua.dzidzoiev.vote.rest;
 
+import javax.ejb.Singleton;
 import javax.security.auth.login.LoginException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Singleton
 public final class DemoAuthenticator {
 
     private static DemoAuthenticator authenticator = null;

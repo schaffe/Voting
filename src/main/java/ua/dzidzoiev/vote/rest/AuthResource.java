@@ -1,6 +1,7 @@
 package ua.dzidzoiev.vote.rest;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.CacheControl;
@@ -11,6 +12,8 @@ import java.security.GeneralSecurityException;
 
 @Stateless
 public class AuthResource implements AuthResourceProxy {
+    @Inject
+    DemoAuthenticator demoAuthenticator;
 
     private static final long serialVersionUID = -6663599014192066936L;
 
@@ -20,7 +23,7 @@ public class AuthResource implements AuthResourceProxy {
             @FormParam("username") String username,
             @FormParam("password") String password) {
 
-        DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
+//        DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
         String serviceKey = httpHeaders.getHeaderString(SERVICE_KEY);
 
         try {
@@ -51,7 +54,7 @@ public class AuthResource implements AuthResourceProxy {
     public Response logout(
             @Context HttpHeaders httpHeaders) {
         try {
-            DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
+//            DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
             String serviceKey = httpHeaders.getHeaderString(SERVICE_KEY);
             String authToken = httpHeaders.getHeaderString(AUTH_TOKEN);
 
