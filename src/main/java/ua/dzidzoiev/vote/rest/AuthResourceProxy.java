@@ -1,10 +1,7 @@
 package ua.dzidzoiev.vote.rest;
 
 import ua.dzidzoiev.vote.rest.filter.Token;
-import ua.dzidzoiev.vote.rest.filter.TokenFree;
 
-import javax.annotation.security.PermitAll;
-import javax.ejb.Local;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -12,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 
-@Local
+//@Local
 @Path("auth")
 public interface AuthResourceProxy extends Serializable {
 

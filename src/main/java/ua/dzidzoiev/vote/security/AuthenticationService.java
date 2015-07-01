@@ -17,14 +17,15 @@
 package ua.dzidzoiev.vote.security;
 
 import org.picketlink.Identity;
-import org.picketlink.credential.DefaultLoginCredentials;
+import org.picketlink.idm.credential.Token;
 import org.picketlink.idm.model.Account;
-import ua.dzidzoiev.vote.rest.DemoAuthenticator;
+import ua.dzidzoiev.vote.security.token.ServiceToken;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.security.GeneralSecurityException;
 
 @Stateless
 public class AuthenticationService {
@@ -36,15 +37,35 @@ public class AuthenticationService {
     private Identity identity;
 
     @Inject
-    private DefaultLoginCredentials credentials;
+    private ServiceCredentials credentials;
 
     @Inject
-    DemoAuthenticator demoAuthenticator;
+    private Token.Provider<ServiceToken> tokenProvider;
 
-    public Response authenticate(DefaultLoginCredentials credential) {
+    @Inject
+    SecurityManager demoAuthenticator;
+
+    public String authenticate(String serviceKey, String login, String password) {
         if (!this.identity.isLoggedIn()) {
-            this.credentials.setUserId(credential.getUserId());
-            this.credentials.setPassword(credential.getPassword());
+            this.credentials.setLogin(login);
+            this.credentials.setPassword(password);
+            this.credentials.setServiceKey(serviceKey);
+            this.identity.login();
+        }
+
+        Account account = this.identity.getAccount();
+
+        return issueToken(account).getToken();
+
+//        return Response.ok().entity(account).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    public Response authenticate(String serviceKey, String token) {
+        if (!this.identity.isLoggedIn()) {
+
+            this.credentials.setServiceKey(serviceKey);
+            this.credentials.setToken(token);
+
             this.identity.login();
         }
 
@@ -53,17 +74,11 @@ public class AuthenticationService {
         return Response.ok().entity(account).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 
-    public Response authenticate(String token) {
-        if (!this.identity.isLoggedIn()) {
-            ServiceTokenCredential credential = new ServiceTokenCredential(token);
+    public void logout(String serviceKey, String authToken) throws GeneralSecurityException {
+        demoAuthenticator.logout(serviceKey, authToken);
+    }
 
-            this.credentials.setCredential(credential);
-
-            this.identity.login();
-        }
-
-        Account account = this.identity.getAccount();
-
-        return Response.ok().entity(account).type(MediaType.APPLICATION_JSON_TYPE).build();
+    private Token issueToken(Account account) {
+        return this.tokenProvider.issue(account);
     }
 }

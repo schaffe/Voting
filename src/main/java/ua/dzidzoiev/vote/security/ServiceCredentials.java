@@ -13,16 +13,19 @@ import javax.inject.Named;
 @RequestScoped
 public class ServiceCredentials extends AbstractBaseCredentials {
 
-    private Object login;
-    private String userId;
+    //TODO create unified type "CREDENTIALS" and remove references to another field
     private String serviceKey;
+    private String login;
+    private Password password;
+    private String token;
+    private Object credential;
 
     public ServiceCredentials() {
     }
 
-    public ServiceCredentials(Object login, String userId, String serviceKey) {
+    public ServiceCredentials(String login, String password, String serviceKey) {
         this.login = login;
-        this.userId = userId;
+        this.password = new Password(password);
         this.serviceKey = serviceKey;
     }
 
@@ -34,50 +37,56 @@ public class ServiceCredentials extends AbstractBaseCredentials {
         this.serviceKey = serviceKey;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("User id can not be null.");
-        }
-
-        this.userId = userId;
-    }
-
-    public Object getLogin() {
+    public String getLogin() {
         return login;
     }
 
-    public void setLogin(Object login) {
+    public void setLogin(String login) {
         this.login = login;
     }
 
     public String getPassword() {
-        if (login != null && login instanceof Password) {
-            Password ptp = (Password) login;
+        if (credential != null && credential instanceof Password) {
+            Password ptp = (Password) credential;
             return new String(ptp.getValue());
         }
         return null;
     }
 
     /**
-     * Convenience method that allows a plain text password login to be set
+     * Convenience method that allows a plain text password credential to be set
      */
     public void setPassword(final String password) {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null.");
         }
 
-        this.login = new Password(password.toCharArray());
+        this.credential = new Password(password.toCharArray());
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    public Object getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Object credential) {
+        this.credential = credential;
     }
 
     @Override
     public void invalidate() {
         this.login = null;
-        this.userId = null;
+        this.password = null;
         this.serviceKey = null;
+        this.token = null;
     }
 
 }

@@ -1,14 +1,12 @@
-package ua.dzidzoiev.vote.rest;
+package ua.dzidzoiev.vote.security;
 
-import javax.ejb.Singleton;
 import javax.security.auth.login.LoginException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Singleton
-public final class DemoAuthenticator {
+public class DemoAuthenticator implements SecurityManager {
 
     private static DemoAuthenticator authenticator = null;
 
@@ -21,7 +19,7 @@ public final class DemoAuthenticator {
     // An authentication token storage which stores <service_key, auth_token>.
     private final Map<String, String> authorizationTokensStorage = new HashMap();
 
-    private DemoAuthenticator() {
+    public DemoAuthenticator() {
         // The usersStorage pretty much represents a user table in the database
         usersStorage.put("username1", "passwordForUser1");
         usersStorage.put("username2", "passwordForUser2");
@@ -33,18 +31,19 @@ public final class DemoAuthenticator {
          * only username1 and username2 is given the REST service access with
          * their respective service keys.
          */
-        serviceKeysStorage.put("f80ebc87-ad5c-4b29-9366-5359768df5a1", "username1");
+        serviceKeysStorage.put("f80ebc87-ad5c-4b29-9366-5359768df5a2", "username1");
         serviceKeysStorage.put("3b91cab8-926f-49b6-ba00-920bcf934c2a", "username2");
     }
 
-    public static DemoAuthenticator getInstance() {
-        if (authenticator == null) {
-            authenticator = new DemoAuthenticator();
-        }
+//    public static DemoAuthenticator getInstance() {
+//        if (authenticator == null) {
+//            authenticator = new DemoAuthenticator();
+//        }
+//
+//        return authenticator;
+//    }
 
-        return authenticator;
-    }
-
+    @Override
     public String login(String serviceKey, String username, String password) throws LoginException {
         if (serviceKeysStorage.containsKey(serviceKey)) {
             String usernameMatch = serviceKeysStorage.get(serviceKey);
@@ -72,14 +71,7 @@ public final class DemoAuthenticator {
         throw new LoginException("Don't Come Here Again!");
     }
 
-    /**
-     * The method that pre-validates if the client which invokes the REST API is
-     * from a authorized and authenticated source.
-     *
-     * @param serviceKey The service key
-     * @param authToken  The authorization token generated after login
-     * @return TRUE for acceptance and FALSE for denied.
-     */
+    @Override
     public boolean isAuthTokenValid(String serviceKey, String authToken) {
         if (isServiceKeyValid(serviceKey)) {
             String usernameMatch1 = serviceKeysStorage.get(serviceKey);
@@ -96,17 +88,12 @@ public final class DemoAuthenticator {
         return false;
     }
 
-    /**
-     * This method checks is the service key is valid
-     *
-     * @param serviceKey
-     * @return TRUE if service key matches the pre-generated ones in service key
-     * storage. FALSE for otherwise.
-     */
+    @Override
     public boolean isServiceKeyValid(String serviceKey) {
         return serviceKeysStorage.containsKey(serviceKey);
     }
 
+    @Override
     public void logout(String serviceKey, String authToken) throws GeneralSecurityException {
         if (serviceKeysStorage.containsKey(serviceKey)) {
             String usernameMatch1 = serviceKeysStorage.get(serviceKey);

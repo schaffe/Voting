@@ -1,25 +1,12 @@
 package ua.dzidzoiev.vote.rest.filter;
 
-import org.jboss.resteasy.util.HttpResponseCodes;
-import ua.dzidzoiev.vote.rest.AuthResource;
-import ua.dzidzoiev.vote.rest.DemoAuthenticator;
-
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.jboss.resteasy.core.ResourceMethodInvoker;
 
 @Provider
 @PreMatching

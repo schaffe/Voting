@@ -1,8 +1,9 @@
 package ua.dzidzoiev.vote.rest;
 
-import javax.ejb.Stateless;
+import ua.dzidzoiev.vote.security.AuthenticationService;
+import ua.dzidzoiev.vote.security.DemoAuthenticator;
+
 import javax.inject.Inject;
-import javax.security.auth.login.LoginException;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
@@ -10,10 +11,13 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.security.GeneralSecurityException;
 
-@Stateless
+//@Stateless
 public class AuthResource implements AuthResourceProxy {
     @Inject
     DemoAuthenticator demoAuthenticator;
+
+    @Inject
+    AuthenticationService authService;
 
     private static final long serialVersionUID = -6663599014192066936L;
 
@@ -26,13 +30,13 @@ public class AuthResource implements AuthResourceProxy {
 //        DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
         String serviceKey = httpHeaders.getHeaderString(SERVICE_KEY);
 
-        try {
-            String authToken = demoAuthenticator.login(serviceKey, username, password);
+//        try {
+            String authToken = authService.authenticate(serviceKey, username, password);
             return getNoCacheResponseBuilder(Response.Status.OK).entity(authToken).build();
 
-        } catch (final LoginException ex) {
-            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity("Problem matching service key, username and password").build();
-        }
+//        } catch (final LoginException ex) {
+//            return getNoCacheResponseBuilder(Response.Status.UNAUTHORIZED).entity("Problem matching service key, username and password").build();
+//        }
     }
 
     @Override
@@ -58,7 +62,7 @@ public class AuthResource implements AuthResourceProxy {
             String serviceKey = httpHeaders.getHeaderString(SERVICE_KEY);
             String authToken = httpHeaders.getHeaderString(AUTH_TOKEN);
 
-            demoAuthenticator.logout(serviceKey, authToken);
+            authService.logout(serviceKey, authToken);
 
             return getNoCacheResponseBuilder(Response.Status.NO_CONTENT).build();
         } catch (final GeneralSecurityException ex) {
