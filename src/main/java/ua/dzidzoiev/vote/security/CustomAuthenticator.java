@@ -16,7 +16,6 @@
  */
 package ua.dzidzoiev.vote.security;
 
-import org.picketlink.annotations.PicketLink;
 import org.picketlink.authentication.BaseAuthenticator;
 import org.picketlink.authentication.LockedAccountException;
 import org.picketlink.authentication.UnexpectedCredentialException;
@@ -31,7 +30,7 @@ import javax.inject.Inject;
  * <p>A simple authenticator that supports two credential types: username/password or a simple token.</p>
  */
 @RequestScoped
-@PicketLink
+//@PicketLink
 public class CustomAuthenticator extends BaseAuthenticator {
 
 
@@ -45,7 +44,7 @@ public class CustomAuthenticator extends BaseAuthenticator {
     Instance<IdentityManager> identityManager;
 
 //    @Override
-//    public void authenticate() {
+//    public void authenticateWithPassword() {
 //        if (this.credentials.getServiceKey() == null) {
 //            return;
 //        }
@@ -101,7 +100,7 @@ public class CustomAuthenticator extends BaseAuthenticator {
             creds = new UsernamePasswordCredentials(credentials.getLogin(),
                     (Password) credentials.getCredential());
         } else if (isTokenCredential()) {
-            creds = new TokenCredential((Token) credentials.getCredential());
+            creds = (TokenCredential) credentials.getCredential();
         }
 
 //        else if (isDigestCredential()) {
@@ -140,7 +139,7 @@ public class CustomAuthenticator extends BaseAuthenticator {
     }
 
     private boolean isTokenCredential() {
-        return Token.class.equals(credentials.getCredential().getClass());
+        return TokenCredential.class.equals(credentials.getCredential().getClass());
     }
 
 }

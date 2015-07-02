@@ -245,17 +245,45 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>org.picketlink</groupId>-->
+            <!--<artifactId>picketlink-api</artifactId>-->
+            <!--<version>2.7.0.Final</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.picketlink</groupId>-->
+            <!--<artifactId>picketlink-impl</artifactId>-->
+            <!--<version>2.7.0.Final</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.picketlink</groupId>-->
+            <!--<artifactId>picketlink-idm-api</artifactId>-->
+            <!--<version>5.0.0-2013Jan16</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.picketlink</groupId>-->
+            <!--<artifactId>picketlink-idm-impl</artifactId>-->
+            <!--<version>5.0.0-2013Jan16</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.picketlink</groupId>-->
+            <!--<artifactId>picketlink-deltaspike</artifactId>-->
+            <!--<version>2.7.0.Final</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-json</artifactId>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-idm-simple-schema</artifactId>
-            <scope>compile</scope>
+            <version>2.7.0.Final</version>
         </dependency>
+
+
     </dependencies>
 
     <build>

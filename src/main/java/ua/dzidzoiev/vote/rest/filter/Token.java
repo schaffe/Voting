@@ -4,7 +4,8 @@ import javax.ws.rs.NameBinding;
 import java.lang.annotation.*;
 
 /**
- * Created by midnight coder on 05-Jun-15.
+ * Allows security checking by authentication token.
+ * This annotation only indicates that methods in th class need to be authenticated by Token.
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(value = RetentionPolicy.RUNTIME)

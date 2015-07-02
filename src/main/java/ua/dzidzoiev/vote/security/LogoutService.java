@@ -17,6 +17,8 @@
 package ua.dzidzoiev.vote.security;
 
 import org.picketlink.Identity;
+import org.picketlink.authorization.annotations.LoggedIn;
+import ua.dzidzoiev.vote.rest.filter.Token;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -26,6 +28,8 @@ import javax.ws.rs.Path;
  * <p>Simple logout service.</p>
  */
 @Path("/logout")
+@Token
+@LoggedIn
 public class LogoutService {
 
     @Inject

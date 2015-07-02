@@ -43,7 +43,7 @@ import java.util.UUID;
  * @see org.jboss.as.quickstarts.picketlink.angularjs.security.authentication.JWSToken
  */
 @Stateless
-@Vetoed
+//@Vetoed
 public class JWSTokenProvider implements Token.Provider<JWSToken> {
 
     @Inject

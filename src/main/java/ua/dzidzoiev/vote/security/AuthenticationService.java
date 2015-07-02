@@ -17,14 +17,16 @@
 package ua.dzidzoiev.vote.security;
 
 import org.picketlink.Identity;
+import org.picketlink.authorization.annotations.LoggedIn;
+import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.credential.Token;
+import org.picketlink.idm.credential.TokenCredential;
 import org.picketlink.idm.model.Account;
-import ua.dzidzoiev.vote.security.token.ServiceToken;
+import ua.dzidzoiev.vote.security.token.JWSToken;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.security.auth.login.LoginException;
 import java.security.GeneralSecurityException;
 
 @Stateless
@@ -37,45 +39,52 @@ public class AuthenticationService {
     private Identity identity;
 
     @Inject
-    private ServiceCredentials credentials;
+    private DefaultLoginCredentials credentials;
 
     @Inject
-    private Token.Provider<ServiceToken> tokenProvider;
+    private Token.Provider<JWSToken> tokenProvider;
 
-    @Inject
-    SecurityManager demoAuthenticator;
 
-    public String authenticate(String serviceKey, String login, String password) {
+    public String authenticateWithPassword(String login, String password) throws LoginException {
         if (!this.identity.isLoggedIn()) {
-            this.credentials.setLogin(login);
+            this.credentials.setUserId(login);
             this.credentials.setPassword(password);
-            this.credentials.setServiceKey(serviceKey);
             this.identity.login();
         }
 
         Account account = this.identity.getAccount();
 
-        return issueToken(account).getToken();
-
-//        return Response.ok().entity(account).type(MediaType.APPLICATION_JSON_TYPE).build();
+        if(account != null) {
+            return issueToken(account).getToken();
+        } else {
+            throw new LoginException("Password authentication unsuccessful");
+        }
     }
 
-    public Response authenticate(String serviceKey, String token) {
+    public void authenticateWithToken(String token) throws LoginException {
+        if(token == null || token.isEmpty()) {
+            throw new LoginException("Token is empty");
+        }
+
         if (!this.identity.isLoggedIn()) {
-
-            this.credentials.setServiceKey(serviceKey);
-            this.credentials.setToken(token);
-
+            this.credentials.setCredential(new TokenCredential(new JWSToken(token)));
             this.identity.login();
         }
 
         Account account = this.identity.getAccount();
 
-        return Response.ok().entity(account).type(MediaType.APPLICATION_JSON_TYPE).build();
+        if (account == null) {
+            throw new LoginException("Token authentication unsuccessful");
+        }
     }
 
-    public void logout(String serviceKey, String authToken) throws GeneralSecurityException {
-        demoAuthenticator.logout(serviceKey, authToken);
+    @LoggedIn
+    public void logout() throws GeneralSecurityException {
+        Account account = this.identity.getAccount();
+
+        this.tokenProvider.invalidate(account);
+
+        this.identity.logout();
     }
 
     private Token issueToken(Account account) {

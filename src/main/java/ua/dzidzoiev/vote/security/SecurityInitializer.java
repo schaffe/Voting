@@ -25,8 +25,6 @@ import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 
 import static org.picketlink.idm.model.basic.BasicModel.*;
@@ -36,8 +34,8 @@ import static org.picketlink.idm.model.basic.BasicModel.*;
  * 
  * @author Shane Bryzak
  */
-@Singleton
-@Startup
+//@Singleton
+//@Startup
 public class SecurityInitializer {
 
     @Inject

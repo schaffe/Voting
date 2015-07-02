@@ -1,41 +1,16 @@
 package ua.dzidzoiev.vote.security;
 
-import org.picketlink.idm.credential.AbstractBaseCredentials;
-import org.picketlink.idm.credential.Password;
+import org.picketlink.idm.credential.*;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-/**
- * Created by midnight coder on 30-Jun-15.
- */
 @Named
 @RequestScoped
 public class ServiceCredentials extends AbstractBaseCredentials {
 
-    //TODO create unified type "CREDENTIALS" and remove references to another field
-    private String serviceKey;
     private String login;
-    private Password password;
-    private String token;
     private Object credential;
-
-    public ServiceCredentials() {
-    }
-
-    public ServiceCredentials(String login, String password, String serviceKey) {
-        this.login = login;
-        this.password = new Password(password);
-        this.serviceKey = serviceKey;
-    }
-
-    public String getServiceKey() {
-        return serviceKey;
-    }
-
-    public void setServiceKey(String serviceKey) {
-        this.serviceKey = serviceKey;
-    }
 
     public String getLogin() {
         return login;
@@ -65,11 +40,19 @@ public class ServiceCredentials extends AbstractBaseCredentials {
     }
 
     public String getToken() {
-        return token;
+        if (credential != null && credential instanceof TokenCredential) {
+            TokenCredential token = (TokenCredential) credential;
+            return token.getToken().getToken();
+        }
+        return null;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(Token token) {
+        if (token == null) {
+            throw new IllegalArgumentException("Token can not be null.");
+        }
+
+        this.credential = new TokenCredential(token);
     }
 
 
@@ -84,9 +67,10 @@ public class ServiceCredentials extends AbstractBaseCredentials {
     @Override
     public void invalidate() {
         this.login = null;
-        this.password = null;
-        this.serviceKey = null;
-        this.token = null;
+        if (credential instanceof Credentials) {
+            ((Credentials) credential).invalidate();
+        }
+        credential = null;
     }
 
 }
