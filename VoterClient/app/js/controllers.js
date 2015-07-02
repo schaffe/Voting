@@ -32,10 +32,69 @@ phonecatApp.config(['$routeProvider', '$locationProvider', function($routeProvid
         });
 }]);
 
+phonecatApp.controller('LoginCtrl', ['$scope', 'authFactory', function LoginCtrl($scope, authFactory) {
+    $scope.login = function (user) {
+        authFactory.login(user).success(function (data) {
+            authFactory.setAuthData(data);
+            // Redirect etc.
+        }).error(function () {
+            // Error handling
+        });
+    };
+}]);
+
+phonecatApp.factory('authFactory', ['$rootScope', '$http', function ($rootScope, $http) {
+
+    var authFactory = {
+        authData: undefined
+    };
+
+    authFactory.login = function (user) {
+        return $http.post(endpoint + 'auth/', user);
+    };
+
+    authFactory.setAuthData = function (authData) {
+        this.authData = {
+            authId: authData.authId,
+            authToken: authData.authToken,
+            authPermission: authData.authPermission
+        };
+        $rootScope.$broadcast('authChanged');
+    };
+
+    authFactory.getAuthData = function () {
+        return this.authData;
+    };
+
+    authFactory.isAuthenticated = function () {
+        return !angular.isUndefined(this.getAuthData());
+    };
+
+    return authFactory;
+}]);
+
+phonecatApp.factory('authHttpRequestInterceptor', ['$rootScope', '$injector', 'authFactory', function ($rootScope, $injector, authFactory) {
+    var authHttpRequestInterceptor = {
+        request: function ($request) {
+            var authFactory = $injector.get('authFactory');
+            if (authFactory.isAuthenticated()) {
+                $request.headers['auth-id'] = authFactory.getAuthData().authId;
+                $request.headers['auth-token'] = authFactory.getAuthData().authToken;
+            }
+            return $request;
+        }}
+
+    return authHttpRequestInterceptor;
+}]);
+
 phonecatApp.controller('RegionsCtrl', function ($scope, $http) {
     $http.get(endpoint + 'region/').success(function(data) {
         $scope.regions = data;
     });
+});
+
+phonecatApp.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('authHttpRequestInterceptor');
 });
 
 phonecatApp.controller('CandidatesCtrl',['$scope','$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams) {

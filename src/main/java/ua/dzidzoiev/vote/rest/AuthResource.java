@@ -2,7 +2,6 @@ package ua.dzidzoiev.vote.rest;
 
 import org.picketlink.http.AccessDeniedException;
 import ua.dzidzoiev.vote.security.AuthenticationService;
-import ua.dzidzoiev.vote.security.DemoAuthenticator;
 import ua.dzidzoiev.vote.service.TestService;
 
 import javax.inject.Inject;
@@ -16,8 +15,6 @@ import java.security.GeneralSecurityException;
 
 //@Stateless
 public class AuthResource implements AuthResourceProxy {
-    @Inject
-    DemoAuthenticator demoAuthenticator;
 
     @Inject
     AuthenticationService authService;
