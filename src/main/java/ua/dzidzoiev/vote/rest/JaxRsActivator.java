@@ -15,14 +15,8 @@ package ua.dzidzoiev.vote.rest;/*
  * limitations under the License.
  */
 
-import ua.dzidzoiev.vote.rest.filter.SecurityRequestFilter;
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A class extending {@link javax.ws.rs.core.Application} and annotated with @ApplicationPath is the Java EE 7 "no XML" approach to activating

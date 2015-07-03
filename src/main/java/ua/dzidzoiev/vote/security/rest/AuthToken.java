@@ -1,4 +1,4 @@
-package ua.dzidzoiev.vote.rest.filter;
+package ua.dzidzoiev.vote.security.rest;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.*;
@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(value = RetentionPolicy.RUNTIME)
 @NameBinding
-public @interface Token {
+public @interface AuthToken {
 }

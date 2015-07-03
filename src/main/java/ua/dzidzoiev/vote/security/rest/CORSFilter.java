@@ -1,13 +1,10 @@
-package ua.dzidzoiev.vote.rest.filter;
-
-import ua.dzidzoiev.vote.rest.AuthResource;
-
-import java.io.IOException;
+package ua.dzidzoiev.vote.security.rest;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
+import java.io.IOException;
 
 @Provider
 public class CORSFilter implements ContainerResponseFilter {
@@ -16,8 +13,8 @@ public class CORSFilter implements ContainerResponseFilter {
     public void filter(final ContainerRequestContext requestContext,
                        final ContainerResponseContext cres) throws IOException {
         cres.getHeaders().add("Access-Control-Allow-Origin", "*");
-        cres.getHeaders().add("Access-Control-Allow-Headers", AuthResource.SERVICE_KEY + ", " + AuthResource.AUTH_TOKEN);
-//        cres.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+//        cres.getHeaders().add("Access-Control-Allow-Headers", AuthResource.SERVICE_KEY + ", " + AuthResource.AUTH_TOKEN);
+        cres.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, " + Constants.Headers.AUTH_TOKEN);
         cres.getHeaders().add("Access-Control-Allow-Credentials", "true");
         cres.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         cres.getHeaders().add("Access-Control-Max-Age", "1209600");

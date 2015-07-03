@@ -1,4 +1,4 @@
-package ua.dzidzoiev.vote.rest.filter;
+package ua.dzidzoiev.vote.security.rest;
 
 import ua.dzidzoiev.vote.security.AuthenticationService;
 
@@ -6,13 +6,14 @@ import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static ua.dzidzoiev.vote.rest.AuthResourceProxy.AUTH_TOKEN;
+import static ua.dzidzoiev.vote.security.rest.Constants.Headers.AUTH_TOKEN;
 
-@Token
+@AuthToken
 @Provider
 public class TokenFilter implements ContainerRequestFilter {
     @Inject
@@ -32,6 +33,11 @@ public class TokenFilter implements ContainerRequestFilter {
             authenticationService.authenticateWithToken(authToken);
         } catch (LoginException e) {
             log.info(e.getMessage());
+            requestContext.abortWith(unauthorized(e));
         }
+    }
+
+    private Response unauthorized(Exception e) {
+        return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
     }
 }

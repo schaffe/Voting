@@ -32,9 +32,6 @@ import java.security.GeneralSecurityException;
 @Stateless
 public class AuthenticationService {
 
-    public static final String USERNAME_PASSWORD_CREDENTIAL_CONTENT_TYPE = "application/x-authc-username-password+json";
-    public static final String TOKEN_CONTENT_CREDENTIAL_TYPE = "application/x-authc-token";
-
     @Inject
     private Identity identity;
 
@@ -74,7 +71,7 @@ public class AuthenticationService {
         Account account = this.identity.getAccount();
 
         if (account == null) {
-            throw new LoginException("Token authentication unsuccessful");
+            throw new LoginException("Token is not valid");
         }
     }
 
