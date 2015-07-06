@@ -17,7 +17,7 @@ public class Voter implements Serializable {
 
     @Column
     private
-    String name;
+    String firstName;
 
     @Column
     private
@@ -38,6 +38,10 @@ public class Voter implements Serializable {
     private
     Vote vote;
 
+    @JsonIgnore
+    @Column
+    private String loginName;
+
     public Voter() {
     }
 
@@ -49,12 +53,12 @@ public class Voter implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getSurname() {
@@ -87,5 +91,13 @@ public class Voter implements Serializable {
 
     public void setVote(Vote vote) {
         this.vote = vote;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

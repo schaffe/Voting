@@ -35,10 +35,11 @@ public class MessageBuilder {
     public static final String TOKEN_PARAMETER = "token";
 
     private final ResponseBuilder response;
-    private final Map<String, Object> messageData = new HashMap<String, Object>();
+    private final Map<String, Object> messageData;
 
-    public MessageBuilder(ResponseBuilder response) {
+    private MessageBuilder(ResponseBuilder response) {
         this.response = response;
+        messageData = new HashMap<String, Object>();
     }
 
     public static MessageBuilder badRequest() {
@@ -55,6 +56,10 @@ public class MessageBuilder {
 
     public static MessageBuilder accessDenied() {
         return new MessageBuilder(Response.status(Response.Status.FORBIDDEN));
+    }
+
+    public static MessageBuilder internalServerError() {
+        return new MessageBuilder(Response.status(Response.Status.INTERNAL_SERVER_ERROR));
     }
 
     @SuppressWarnings("unchecked")

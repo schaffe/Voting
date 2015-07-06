@@ -30,17 +30,11 @@ import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.json.jose.JWSBuilder;
 
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 import java.util.UUID;
 
 /**
- * <p>This is a simple {@link Token.Provider} that manages a specific token type. In this case the
- * type is {@link org.jboss.as.quickstarts.picketlink.angularjs.security.authentication.JWSToken}.</p>
- *
- * @author Pedro Igor
- *
- * @see org.jboss.as.quickstarts.picketlink.angularjs.security.authentication.JWSToken
+ * <p>This is a simple {@link Token.Provider} that manages a specific token type.
  */
 @Stateless
 //@Vetoed

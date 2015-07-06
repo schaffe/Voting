@@ -20,22 +20,24 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.credential.Password;
-import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 
-import static org.picketlink.idm.model.basic.BasicModel.*;
+import static org.picketlink.idm.model.basic.BasicModel.grantRole;
+import static ua.dzidzoiev.vote.security.ApplicationRoles.*;
 
 /**
  * This startup bean creates a number of default users, groups and roles when the application is started.
  * 
  * @author Shane Bryzak
  */
-//@Singleton
-//@Startup
+@Singleton
+@Startup
 public class SecurityInitializer {
 
     @Inject
@@ -44,54 +46,54 @@ public class SecurityInitializer {
     @PostConstruct
     public void create() {
 
-        // Create user john
-        User john = new User("john");
-        john.setEmail("john@acme.com");
-        john.setFirstName("John");
-        john.setLastName("Smith");
+        User admin = new User("admin");
+        admin.setEmail("admin@acme.com");
+        admin.setFirstName("John");
+        admin.setLastName("Smith");
 
         IdentityManager identityManager = this.partitionManager.createIdentityManager();
 
-        identityManager.add(john);
-        identityManager.updateCredential(john, new Password("demo"));
+        identityManager.add(admin);
+        identityManager.updateCredential(admin, new Password("admin"));
 
-        // Create user mary
-        User mary = new User("mary");
-        mary.setEmail("mary@acme.com");
-        mary.setFirstName("Mary");
-        mary.setLastName("Jones");
-        identityManager.add(mary);
-        identityManager.updateCredential(mary, new Password("demo"));
+        User statistics = new User("stats");
+        statistics.setEmail("statistics@acme.com");
+        statistics.setFirstName("Mary");
+        statistics.setLastName("Jones");
+        identityManager.add(statistics);
+        identityManager.updateCredential(statistics, new Password("stats"));
 
-        // Create user jane
-        User jane = new User("jane");
-        jane.setEmail("jane@acme.com");
-        jane.setFirstName("Jane");
-        jane.setLastName("Doe");
-        identityManager.add(jane);
-        identityManager.updateCredential(jane, new Password("demo"));
+        User voter = new User("voter");
+        voter.setEmail("voter@acme.com");
+        voter.setFirstName("Jane");
+        voter.setLastName("Doe");
+        identityManager.add(voter);
+        identityManager.updateCredential(voter, new Password("voter"));
 
-        // Create role "manager"
-        Role manager = new Role("manager");
-        identityManager.add(manager);
+        Role admin_role = new Role(ADMIN);
+        identityManager.add(admin_role);
 
-        // Create application role "superuser"
-        Role superuser = new Role("superuser");
-        identityManager.add(superuser);
+        Role stats_role = new Role(STATISTIC_VIEWER);
+        identityManager.add(stats_role);
 
-        // Create group "sales"
-        Group sales = new Group("sales");
-        identityManager.add(sales);
+        Role voter_role = new Role(VOTER);
+        identityManager.add(voter_role);
+
+//        // Create group "sales"
+//        Group sales = new Group("sales");
+//        identityManager.add(sales);
 
         RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
 
-        // Make john a member of the "sales" group
-        addToGroup(relationshipManager, john, sales);
-
-        // Make mary a manager of the "sales" group
-        grantGroupRole(relationshipManager, mary, manager, sales);
+//        // Make john a member of the "sales" group
+//        addToGroup(relationshipManager, admin, sales);
+//
+//        // Make mary a manager of the "sales" group
+//        grantGroupRole(relationshipManager, statistics, admin_role, sales);
 
         // Grant the "superuser" application role to jane
-        grantRole(relationshipManager, jane, superuser);
+        grantRole(relationshipManager, voter, voter_role);
+        grantRole(relationshipManager, admin, admin_role);
+        grantRole(relationshipManager, statistics, stats_role);
     }
 }

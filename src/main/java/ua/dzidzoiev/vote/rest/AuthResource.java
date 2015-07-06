@@ -4,6 +4,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ua.dzidzoiev.vote.security.AuthenticationService;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
 import ua.dzidzoiev.vote.service.TestService;
+import ua.dzidzoiev.vote.util.MessageBuilder;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
@@ -31,9 +32,9 @@ public class AuthResource {
 
         try {
             String authToken = authService.authenticateWithPassword(username, password);
-            return getNoCacheResponseBuilder(Response.Status.OK).entity(authToken).build();
+            return MessageBuilder.ok().token(authToken).build();
         } catch (final LoginException ex) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Problem matching username and password").build();
+            return MessageBuilder.authenticationRequired().message("Problem matching username and password").build();
         }
     }
 
@@ -64,9 +65,9 @@ public class AuthResource {
             @Context HttpHeaders httpHeaders) {
         try {
             authService.logout();
-            return Response.status(Response.Status.NO_CONTENT).build();
+            return MessageBuilder.ok().build();
         } catch (GeneralSecurityException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return MessageBuilder.internalServerError().message(e.getMessage()).build();
         }
     }
 
