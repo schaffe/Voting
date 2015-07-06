@@ -1,5 +1,6 @@
 package ua.dzidzoiev.vote.service;
 
+import org.picketlink.authorization.annotations.RolesAllowed;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.data.VoteRepository;
@@ -9,13 +10,12 @@ import ua.dzidzoiev.vote.model.dto.Statistics;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static ua.dzidzoiev.vote.security.ApplicationRoles.*;
 
 /**
  * Created by midnight coder on 27-May-15.
@@ -35,7 +35,8 @@ public class StatisticsService {
     @Inject
     VoteRepository voteRepository;
 
-    public  List<Statistics> getStats(long regionId) {
+    @RolesAllowed(STATISTIC_VIEWER)
+    public  List<Statistics> getHotStats(long regionId) {
         Region region = regionRepository.findById(regionId);
         List<Candidate> candidates = region.getCandidates();
         List<Statistics> statistics = new ArrayList<>();
@@ -50,4 +51,7 @@ public class StatisticsService {
         }
         return statistics;
     }
+
+    //TODO get whole stats
+    //TODO recount stats
 }

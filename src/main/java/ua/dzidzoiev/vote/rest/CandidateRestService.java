@@ -1,9 +1,8 @@
 package ua.dzidzoiev.vote.rest;
 
 import ua.dzidzoiev.vote.data.CandidateRepository;
-import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.model.Candidate;
-import ua.dzidzoiev.vote.model.Region;
+import ua.dzidzoiev.vote.security.rest.AuthToken;
 import ua.dzidzoiev.vote.service.VotingService;
 
 import javax.enterprise.context.RequestScoped;
@@ -49,6 +48,7 @@ public class CandidateRestService {
 
     @POST
     @Path("/{id:[0-9][0-9]*}/vote")
+    @AuthToken
     public Response vote(@PathParam("id") long candId) {
         service.vote(candId);
         return null;

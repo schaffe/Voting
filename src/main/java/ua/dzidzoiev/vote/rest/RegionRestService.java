@@ -16,20 +16,16 @@ package ua.dzidzoiev.vote.rest;/*
  */
 
 import ua.dzidzoiev.vote.data.RegionRepository;
-import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.dto.Statistics;
+import ua.dzidzoiev.vote.security.rest.AuthToken;
 import ua.dzidzoiev.vote.service.StatisticsService;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -55,11 +51,13 @@ public class RegionRestService {
 
     @GET
     @Path("/{id:[0-9][0-9]*}/stats")
-    public List<Statistics> vote(@PathParam("id") long regionId) {
-        return statisticsService.getStats(regionId);
+    @AuthToken
+    public List<Statistics> getStats(@PathParam("id") long regionId) {
+        return statisticsService.getHotStats(regionId);
     }
 
     @POST
+    @AuthToken
     public Region create(Region city) {
         repository.create(city);
         return city;

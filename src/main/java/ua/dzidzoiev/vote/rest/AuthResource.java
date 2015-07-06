@@ -3,12 +3,14 @@ package ua.dzidzoiev.vote.rest;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import ua.dzidzoiev.vote.security.AuthenticationService;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
-import ua.dzidzoiev.vote.service.TestService;
 import ua.dzidzoiev.vote.util.MessageBuilder;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
-import javax.ws.rs.*;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.*;
 import java.security.GeneralSecurityException;
 
@@ -18,9 +20,6 @@ public class AuthResource {
 
     @Inject
     AuthenticationService authService;
-
-    @Inject
-    TestService testService;
 
     @POST
     @Path("login")
@@ -36,25 +35,6 @@ public class AuthResource {
         } catch (final LoginException ex) {
             return MessageBuilder.authenticationRequired().message("Problem matching username and password").build();
         }
-    }
-
-    @GET
-    @Path("demo-get-method")
-    @AuthToken
-    public Response demoGetMethod() {
-        return Response.status(Response.Status.OK).entity(testService.testGet()).build();
-    }
-
-    @GET
-    public Response usecured() {
-        return Response.status(Response.Status.OK).entity(testService.unsecured()).build();
-    }
-
-    @POST
-    @Path("demo-post-method")
-    @AuthToken
-    public Response demoPostMethod() {
-        return getNoCacheResponseBuilder(Response.Status.OK).entity(testService.testPost()).build();
     }
 
     @POST

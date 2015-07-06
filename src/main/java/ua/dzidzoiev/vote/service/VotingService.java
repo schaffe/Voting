@@ -1,30 +1,23 @@
 package ua.dzidzoiev.vote.service;
 
+import org.picketlink.authorization.annotations.RolesAllowed;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.data.VoteRepository;
-import ua.dzidzoiev.vote.data.VoterRepository;
 import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.Vote;
 import ua.dzidzoiev.vote.model.Voter;
+import ua.dzidzoiev.vote.service.annotation.CurrentVoter;
 
 import javax.ejb.Stateless;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Qualifier;
 import javax.persistence.EntityManager;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.Date;
 
-/**
- * Created by midnight coder on 26-May-15.
- */
+import static ua.dzidzoiev.vote.security.ApplicationRoles.VOTER;
+
 @Stateless
+@RolesAllowed(VOTER)
 public class VotingService {
 
     @Inject
@@ -37,7 +30,7 @@ public class VotingService {
     VoteRepository voteRepository;
 
     @Inject
-    @Named("logged_voter")
+    @CurrentVoter
     Voter voter;
 
     public void vote(long candId) {

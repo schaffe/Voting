@@ -21,6 +21,7 @@
  */
 package ua.dzidzoiev.vote.security;
 
+import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.credential.Password;
@@ -51,6 +52,9 @@ import javax.inject.Inject;
 public class IdentityModelManager {
 
     @Inject
+    private Identity identity;
+
+    @Inject
     private IdentityManager identityManager;
 
     @Inject
@@ -65,6 +69,13 @@ public class IdentityModelManager {
         }
 
         return BasicModel.getUser(identityManager, loginName);
+    }
+
+    public User getLoggedInUser() {
+        Account account = identity.getAccount();
+
+        return (User) account;
+        //TODO find
     }
 
     public User createAccount(AccountRegistration request) {
