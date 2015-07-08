@@ -1,5 +1,7 @@
 package ua.dzidzoiev.vote.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import ua.dzidzoiev.vote.security.AuthenticationService;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
@@ -16,6 +18,7 @@ import java.security.GeneralSecurityException;
 
 @Path("auth")
 @Produces(MediaType.APPLICATION_JSON)
+@Api(value = "/auth", description = "Auth resource")
 public class AuthResource {
 
     @Inject
@@ -23,6 +26,7 @@ public class AuthResource {
 
     @POST
     @Path("login")
+    @ApiOperation(value = "login", notes = "Authenticate user with login and password")
     @NoCache
     public Response login(
 //            @Context HttpHeaders httpHeaders,
