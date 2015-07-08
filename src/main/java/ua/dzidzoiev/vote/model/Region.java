@@ -11,6 +11,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "region")
 @Entity
+@Table(name = "regions")
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

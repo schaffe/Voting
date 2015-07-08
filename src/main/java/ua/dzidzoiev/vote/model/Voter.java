@@ -9,6 +9,7 @@ import java.io.Serializable;
  * Created by midnight coder on 25-May-15.
  */
 @Entity
+@Table(name = "voters")
 public class Voter implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

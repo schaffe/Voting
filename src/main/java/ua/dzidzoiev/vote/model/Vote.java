@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by midnight coder on 25-May-15.
  */
 @Entity
+@Table(name = "votes")
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -32,7 +32,7 @@ public class MessageBuilder {
 
     public static final String MESSAGE_PARAMETER = "message";
     public static final String ACTIVATION_CODE_PARAMETER = "activationCode";
-    public static final String TOKEN_PARAMETER = "token";
+    public static final String TOKEN_PARAMETER = "X-Auth-Token";
 
     private final ResponseBuilder response;
     private final Map<String, Object> messageData;

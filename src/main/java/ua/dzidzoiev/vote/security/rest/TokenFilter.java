@@ -1,6 +1,7 @@
 package ua.dzidzoiev.vote.security.rest;
 
 import ua.dzidzoiev.vote.security.AuthenticationService;
+import ua.dzidzoiev.vote.util.MessageBuilder;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
@@ -38,6 +39,6 @@ public class TokenFilter implements ContainerRequestFilter {
     }
 
     private Response unauthorized(Exception e) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        return MessageBuilder.accessDenied().message(e.getMessage()).build();
     }
 }
