@@ -15,6 +15,8 @@ package ua.dzidzoiev.vote.rest;/*
  * limitations under the License.
  */
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.dto.Statistics;
@@ -33,6 +35,7 @@ import java.util.logging.Logger;
 @Consumes("*/*")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
+@Api(value = "/region", description = "Region resource")
 public class RegionRestService {
     @Inject
     private Logger log;
@@ -44,6 +47,7 @@ public class RegionRestService {
     StatisticsService statisticsService;
 
     @GET
+    @ApiOperation(value = "", notes = "Get all regions")
     public List<Region> listAll() {
         List<Region> regions = repository.getAll();
         return regions;
@@ -52,12 +56,14 @@ public class RegionRestService {
     @GET
     @Path("/{id:[0-9][0-9]*}/stats")
     @AuthToken
+    @ApiOperation(value = "/{id:[0-9][0-9]*}/stats", notes = "Get statistics related to some region")
     public List<Statistics> getStats(@PathParam("id") long regionId) {
         return statisticsService.getHotStats(regionId);
     }
 
     @POST
     @AuthToken
+    @ApiOperation(value = "", notes = "Create new region")
     public Region create(Region city) {
         repository.create(city);
         return city;

@@ -15,8 +15,14 @@ package ua.dzidzoiev.vote.rest;/*
  * limitations under the License.
  */
 
+import com.wordnik.swagger.jaxrs.config.BeanConfig;
+import ua.dzidzoiev.vote.security.rest.CORSFilter;
+import ua.dzidzoiev.vote.security.rest.TokenFilter;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A class extending {@link javax.ws.rs.core.Application} and annotated with @ApplicationPath is the Java EE 7 "no XML" approach to activating
@@ -28,4 +34,38 @@ import javax.ws.rs.core.Application;
  */
 @ApplicationPath("/rest")
 public class JaxRsActivator extends Application {
+
+    public JaxRsActivator() {
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.0");
+        beanConfig.setBasePath("http://voting-schaffedev.rhcloud.com/rest");
+        beanConfig.setResourcePackage("ua.dzidzoiev.vote.rest");
+        beanConfig.setScan(true);
+    }
+
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> resources = new HashSet<>();
+
+        addRestResourceClasses(resources);
+        addRestFilterClasses(resources);
+
+        resources.add(com.wordnik.swagger.jaxrs.listing.ApiListingResource.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ResourceListingProvider.class);
+
+        return resources;
+    }
+
+    private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(AuthResource.class);
+        resources.add(CandidateRestService.class);
+        resources.add(RegionRestService.class);
+    }
+
+    private void addRestFilterClasses(Set<Class<?>> resources) {
+        resources.add(TokenFilter.class);
+        resources.add(CORSFilter.class);
+    }
 }

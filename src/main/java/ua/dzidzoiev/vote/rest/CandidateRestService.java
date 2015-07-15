@@ -1,5 +1,7 @@
 package ua.dzidzoiev.vote.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
@@ -20,6 +22,7 @@ import java.util.logging.Logger;
 @Consumes("*/*")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
+@Api(value = "/region/{region-id:[0-9][0-9]*}/candidate", description = "Candidate resource to specific region")
 public class CandidateRestService {
 
     @Inject
@@ -33,6 +36,7 @@ public class CandidateRestService {
 
     @GET
     @Path("/{id:[0-9][0-9]*}")
+    @ApiOperation(value = "{id:[0-9][0-9]*}", notes = "Get candidate data by it`s ID")
     public Candidate lookupCandidateById(@PathParam("id") long id) {
         Candidate candidate = repository.findById(id);
         if (candidate == null) {
@@ -42,6 +46,7 @@ public class CandidateRestService {
     }
 
     @GET
+    @ApiOperation(value = "", notes = "Get all candidates in the region")
     public List<Candidate> listAll(@PathParam("region-id") long id) {
         return repository.getAllCandidatesInRegion(id);
     }
@@ -49,6 +54,7 @@ public class CandidateRestService {
     @POST
     @Path("/{id:[0-9][0-9]*}/vote")
     @AuthToken
+    @ApiOperation(value = "{id:[0-9][0-9]*}/vote", notes = "Vote on some candidate. Note that vote can be made only once")
     public Response vote(@PathParam("id") long candId) {
         service.vote(candId);
         return null;
