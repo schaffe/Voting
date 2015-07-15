@@ -14,7 +14,8 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 
 /**
- * Created by midnight coder on 15-Jul-15.
+ * Initializes application
+ * !!!! SET ENCODING TO win-1251
  */
 @Startup
 @Singleton
@@ -32,10 +33,10 @@ public class ApplicationInitilizer {
 
     @PostConstruct
     public void initApplication() {
-        Region rivne = new Region("Р С–РІРЅРµ", "Р Р’");
+        Region rivne = new Region("Рівне", "РВ");
         Region kiev = new Region("Kiev", "KV");
         Region chernihiv = new Region("Chernihiv", "CR");
-        Region volun = new Region("Р’РѕР»РёРЅСЊ", "Р’Р›");
+        Region volun = new Region("Волинь", "ВЛ");
 
         regionRepository.create(rivne);
         regionRepository.create(kiev);
@@ -52,7 +53,7 @@ public class ApplicationInitilizer {
         voterRepository.create(voter);
 
         Candidate candidate1 = new Candidate(kiev, "John", "Deere", "Traktorist");
-        Candidate candidate2 = new Candidate(kiev, "РњРёС…Р°Р№Р»Рѕ", "РџРѕРїР»Р°РІСЃСЊРєРёР№","РќР°СЂРѕРґРЅРёР№ Р°СЂС‚РёСЃС‚ СѓРєСЂР°С—РЅРё, СЂРµРєС‚РѕСЂ РљРёС—РІСЃСЊРєРѕРіРѕ РЅР°С†С–РѕРЅР°Р»СЊРЅРѕРіРѕ СѓРЅС–РІРµСЂСЃРёС‚РµС‚Сѓ РєСѓР»СЊС‚СѓСЂРё С‚Р° РјРёСЃС‚РµС†С‚РІ. Р®РЅРёР№ РѕСЂРµР».");
+        Candidate candidate2 = new Candidate(kiev, "Михайло", "Поплавський","Народний артист україни, ректор Київського національного університету культури та мистецтв. Юний орел.");
 
         candidateRepository.create(candidate1);
         candidateRepository.create(candidate2);
