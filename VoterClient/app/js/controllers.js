@@ -1,12 +1,16 @@
 'use strict';
 
 /* Controllers */
-var phonecatApp = angular.module('phonecatApp', ['ngRoute'])
-var endpoint = "http://10.0.1.40:8080/InteractivePollWFB/rest/";
+var phonecatApp = angular.module('phonecatApp', ['ngRoute']);
+var endpoint = "http://voting-schaffedev.rhcloud.com/rest/";
 
-phonecatApp.config(['$routeProvider', '$locationProvider', function($routeProvide, $locationProvider){
+phonecatApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
 
-    $routeProvide
+    $routeProvider
+        .when('/login', {
+            templateUrl:'template/login.html',
+            controller:'LoginCtrl'
+        })
         .when('/region',{
             templateUrl:'template/regions.html',
             controller:'RegionsCtrl'
@@ -93,9 +97,9 @@ phonecatApp.controller('RegionsCtrl', function ($scope, $http) {
     });
 });
 
-phonecatApp.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('authHttpRequestInterceptor');
-});
+//phonecatApp.config(function ($httpProvider) {
+//    $httpProvider.interceptors.push('authHttpRequestInterceptor');
+//});
 
 phonecatApp.controller('CandidatesCtrl',['$scope','$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams) {
     $scope.regionId = $routeParams.regionId;
@@ -123,3 +127,7 @@ phonecatApp.controller('StatisticsCtrl',['$scope','$http', '$location', '$routeP
         $scope.stats = data;
     });
 }]);
+
+phonecatApp.controller('LoginCtrl', ['$scope', function($scope){
+    //aaa
+}])
