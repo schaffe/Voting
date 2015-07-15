@@ -2,6 +2,7 @@ package ua.dzidzoiev.vote.data;
 
 import ua.dzidzoiev.vote.model.Voter;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -9,6 +10,7 @@ import javax.persistence.Query;
 /**
  * Created by midnight coder on 25-May-15.
  */
+@RequestScoped
 public class VoterRepository {
     @Inject
     EntityManager em;

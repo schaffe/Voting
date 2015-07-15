@@ -36,7 +36,7 @@ import static ua.dzidzoiev.vote.security.ApplicationRoles.*;
  * 
  * @author Shane Bryzak
  */
-@Singleton
+@Singleton(name = "SecurityInitializer")
 @Startup
 public class SecurityInitializer {
 

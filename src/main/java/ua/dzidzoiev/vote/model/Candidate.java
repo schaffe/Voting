@@ -30,6 +30,12 @@ public class Candidate {
     public Candidate() {
     }
 
+    public Candidate(Region region, String name, String surname, String description) {
+        this.region = region;
+        this.name = name;
+        this.surname = surname;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
@@ -70,4 +76,6 @@ public class Candidate {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

@@ -39,6 +39,11 @@ public class Region {
     public Region() {
     }
 
+    public Region(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
     public Region(Long id) {
         this.id = id;
     }
