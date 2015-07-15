@@ -26,8 +26,8 @@ public class AuthResource {
 
     @POST
     @Path("login")
-    @ApiOperation(value = "login", notes = "Authenticate user with login and password")
     @NoCache
+    @ApiOperation(value = "login", notes = "Authenticate user with login and password")
     public Response login(
 //            @Context HttpHeaders httpHeaders,
             @FormParam("username") String username,
@@ -45,6 +45,7 @@ public class AuthResource {
     @Path("logout")
     @AuthToken
     @NoCache
+    @ApiOperation(value = "logout", notes = "Logout user and invalidate token")
     public Response logout(
             @Context HttpHeaders httpHeaders) {
         try {

@@ -16,6 +16,8 @@ package ua.dzidzoiev.vote.rest;/*
  */
 
 import com.wordnik.swagger.jaxrs.config.BeanConfig;
+import ua.dzidzoiev.vote.security.rest.CORSFilter;
+import ua.dzidzoiev.vote.security.rest.TokenFilter;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -36,7 +38,7 @@ public class JaxRsActivator extends Application {
     public JaxRsActivator() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
-        beanConfig.setBasePath("http://localhost:8080/InteractivePollWFB/rest");
+        beanConfig.setBasePath("http://voting-schaffedev.rhcloud.com/rest");
         beanConfig.setResourcePackage("ua.dzidzoiev.vote.rest");
         beanConfig.setScan(true);
     }
@@ -46,6 +48,7 @@ public class JaxRsActivator extends Application {
         Set<Class<?>> resources = new HashSet<>();
 
         addRestResourceClasses(resources);
+        addRestFilterClasses(resources);
 
         resources.add(com.wordnik.swagger.jaxrs.listing.ApiListingResource.class);
         resources.add(com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider.class);
@@ -59,5 +62,10 @@ public class JaxRsActivator extends Application {
         resources.add(AuthResource.class);
         resources.add(CandidateRestService.class);
         resources.add(RegionRestService.class);
+    }
+
+    private void addRestFilterClasses(Set<Class<?>> resources) {
+        resources.add(TokenFilter.class);
+        resources.add(CORSFilter.class);
     }
 }

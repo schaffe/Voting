@@ -31,7 +31,7 @@
                     var htmlContent = $( "#logMsgDiv" ).html( )
                             + "<p style='color: red;'>This is what happens when there you call the REST APIs without a service key and authorisation token."
                             + "<br />HTTP Status: " + xhr.status + ", Unauthorized access to demo-post-method</p>";
- 
+
                     $( "#logMsgDiv" ).html( htmlContent );
                 }
             } );
@@ -44,8 +44,8 @@
                 url: "http://localhost:8080/InteractivePollWFB/rest/auth/login/",
                 type: "POST",
                 data: {
-                    "username": "john",
-                    "password": "demo"
+                    "username": "admin",
+                    "password": "admin"
                 },
                 success: function( data, textStatus, xhr ) {
                     sessionStorage.auth_token = data;
@@ -159,7 +159,7 @@
                     var htmlContent = $( "#logMsgDiv" ).html( )
                             + "<p style='color: red;'>This is what happens when someone reuses the authorisation token after a user had been logged out"
                             + "<br />HTTP Status: " + xhr.status + ", Unauthorized access to demo-get-method</p>";
- 
+
                     $( "#logMsgDiv" ).html( htmlContent );
                 }
             } );
