@@ -73,14 +73,12 @@ public class IdentityModelManager {
 
     public User getLoggedInUser() {
         Account account = identity.getAccount();
-
         return (User) account;
-        //TODO find
     }
 
     public User createAccount(AccountRegistration request) {
         if (!request.isValid()) {
-            throw new IllegalArgumentException("Insuficient information.");
+            throw new IllegalArgumentException("Insufficient information.");
         }
 
         User newUser = new User(request.getLoginName());

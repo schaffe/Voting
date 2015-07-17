@@ -6,12 +6,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * Created by midnight coder on 25-May-15.
  */
 @RequestScoped
 public class VoterRepository {
+
     @Inject
     EntityManager em;
 
@@ -20,15 +22,17 @@ public class VoterRepository {
     }
 
     public Voter findByLoginName(String loginName) {
-        Query query = em.createQuery("select Voter from Voter v where v.loginName = :loginName", Voter.class);
-        query.setParameter("loginName", loginName);
-        return (Voter) query.getSingleResult();
+        return em
+                .createQuery("select v from Voter v where v.loginName = :loginName", Voter.class)
+                .setParameter("loginName", loginName)
+                .getSingleResult();
     }
 
     public Voter findByPersonalId(String personalId) {
-        Query query = em.createQuery("select Voter from Voter v where v.personalId = :personalId", Voter.class);
-        query.setParameter("personalId", personalId);
-        return (Voter) query.getSingleResult();
+        return em
+                .createQuery("select v from Voter v where v.personalId = :personalId", Voter.class)
+                .setParameter("personalId", personalId)
+                .getSingleResult();
     }
 
     public void create(Voter c) {
