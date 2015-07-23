@@ -22,10 +22,16 @@ public class RegionRepository {
         return em.find(Region.class, id);
     }
 
+    public Region findByCode(String code) {
+        return em
+                .createQuery("SELECT r FROM Region r WHERE r.code = :code", Region.class)
+                .setParameter("code", code)
+                .getSingleResult();
+    }
 
     public List<Region> getAll() {
         return em
-                .createQuery("Select region from Region region", Region.class)
+                .createQuery("SELECT r FROM Region r ORDER BY r.name", Region.class)
                 .getResultList();
     }
 

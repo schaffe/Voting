@@ -36,8 +36,15 @@ public class CandidateRepository {
 
     public List<Candidate> getAllCandidatesInRegion(long regionId) {
         return em
-                .createQuery("Select candidate from Candidate candidate where candidate.region.id = :regionId", Candidate.class)
+                .createQuery("SELECT c FROM Candidate c WHERE c.region.id = :regionId ORDER BY c.surname", Candidate.class)
                 .setParameter("regionId", regionId)
+                .getResultList();
+    }
+
+    public List<Candidate> getAllCandidatesInRegion(String regionCode) {
+        return em
+                .createQuery("SELECT c FROM Candidate c WHERE c.region.code = :regionCode ORDER BY c.surname", Candidate.class)
+                .setParameter("regionCode", regionCode)
                 .getResultList();
     }
 }
