@@ -7,7 +7,7 @@ import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.Vote;
 import ua.dzidzoiev.vote.model.Voter;
-import ua.dzidzoiev.vote.service.annotation.CurrentVoter;
+import ua.dzidzoiev.vote.service.annotation.inject.CurrentVoter;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -33,8 +33,8 @@ public class VotingService {
     @CurrentVoter
     Voter voter;
 
-    public void vote(long candId) {
-        Candidate candidate = candidateRepository.findById(candId);
+    public void vote(String candId) {
+        Candidate candidate = candidateRepository.findByRegId(candId);
         Region region = candidate.getRegion();
         voter = em.find(Voter.class, 1l);
         Region voterRegion = voter.getRegion();

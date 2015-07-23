@@ -10,7 +10,6 @@ import ua.dzidzoiev.vote.model.Voter;
 import javax.annotation.PostConstruct;
 import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 
 /**
@@ -51,8 +50,8 @@ public class ApplicationInitilizer {
 
         voterRepository.create(voter);
 
-        Candidate candidate1 = new Candidate(kiev, "John", "Deere", "Traktorist");
-        Candidate candidate2 = new Candidate(kiev, "Михайло", "Поплавський","Народний артист україни, ректор Київського національного університету культури та мистецтв. Юний орел.");
+        Candidate candidate1 = new Candidate(kiev, "John", "Deere", "Traktorist", "00");
+        Candidate candidate2 = new Candidate(kiev, "Михайло", "Поплавський","Народний артист україни, ректор Київського національного університету культури та мистецтв. Юний орел.", "01");
 
         candidateRepository.create(candidate1);
         candidateRepository.create(candidate2);

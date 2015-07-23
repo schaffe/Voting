@@ -12,14 +12,18 @@ import java.io.Serializable;
 @Entity
 @Table(name = "voters")
 public class Voter implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column
+    @NotNull
     private String firstName;
 
     @Column
+    @NotNull
     private String surname;
 
     @Column(unique = true, nullable = false)

@@ -42,14 +42,13 @@ public class AccountResource {
     })
     @ValidateRequest
     public Response registerAccount(@Valid AccountRegistration payload) {
-        Voter voter = accountService.registerVoter(payload);
+        accountService.registerVoter(payload);
         return MessageBuilder.ok().message("{success.log_in}").build();
     }
 
     @DELETE
     @Path("/{username}")
     @ApiOperation(value = "Delete account", notes = "")
-
     public Response deleteAccount(@PathParam("username") String username) {
         accountService.removeVoter(username);
         return MessageBuilder.ok().build();

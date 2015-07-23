@@ -22,6 +22,13 @@ public class CandidateRepository {
         return em.find(Candidate.class, id);
     }
 
+    public Candidate findByRegId(String regId) {
+        return em
+                .createQuery("SELECT c FROM Candidate c WHERE c.registrationId = :regId", Candidate.class)
+                .setParameter("regId", regId)
+                .getSingleResult();
+    }
+
     public void create(Candidate c) {
         em.persist(c);
     }

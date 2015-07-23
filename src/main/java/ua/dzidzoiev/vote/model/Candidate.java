@@ -3,6 +3,8 @@ package ua.dzidzoiev.vote.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by midnight coder on 25-May-15.
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "candidates")
 public class Candidate {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,22 +22,33 @@ public class Candidate {
     private Region region;
 
     @Column
+    @Size(min = 1, max = 16)
+    @NotNull
     private String name;
 
     @Column
+    @Size(min = 1, max = 16)
+    @NotNull
     private String surname;
 
-    @Column
+    @Column (columnDefinition = "TEXT")
+    @Size(max = 2048)
     private String description;
+
+    @Column
+    @Size(max = 16)
+    @NotNull
+    private String registrationId;
 
     public Candidate() {
     }
 
-    public Candidate(Region region, String name, String surname, String description) {
+    public Candidate(Region region, String name, String surname, String description, String registrationId) {
         this.region = region;
         this.name = name;
         this.surname = surname;
         this.description = description;
+        this.registrationId = registrationId;
     }
 
     public Long getId() {
@@ -78,4 +92,11 @@ public class Candidate {
     }
 
 
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
 }

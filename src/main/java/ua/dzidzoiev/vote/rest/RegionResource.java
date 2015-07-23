@@ -17,14 +17,17 @@ package ua.dzidzoiev.vote.rest;/*
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.jboss.resteasy.spi.validation.ValidateRequest;
 import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.dto.Statistics;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
+import ua.dzidzoiev.vote.service.RegionService;
 import ua.dzidzoiev.vote.service.StatisticsService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -35,36 +38,37 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
 @Api(value = "/regions", description = "Region resource")
-public class RegionRestService {
+public class RegionResource {
     @Inject
     private Logger log;
 
     @Inject
-    private RegionRepository repository;
+    private StatisticsService statisticsService;
 
     @Inject
-    StatisticsService statisticsService;
+    private RegionService regionService;
 
     @GET
     @ApiOperation(value = "", notes = "Get all regions")
     public List<Region> listAll() {
-        List<Region> regions = repository.getAll();
+        List<Region> regions = regionService.getAll();
         return regions;
     }
 
     @GET
-    @Path("/{region-id:[0-9][0-9]*}/stats")
+    @Path("/{region-code}/stats")
     @AuthToken
-    @ApiOperation(value = "/{region-id}/stats", notes = "Get statistics related to some region")
-    public List<Statistics> getStats(@PathParam("region-id") long regionId) {
-        return statisticsService.getHotStats(regionId);
+    @ApiOperation(value = "/{region-code}/stats", notes = "Get statistics related to some region")
+    public List<Statistics> getStats(@PathParam("region-code") String code) {
+        return statisticsService.getHotStats(code);
     }
 
     @POST
     @AuthToken
     @ApiOperation(value = "", notes = "Create new region")
-    public Region create(Region city) {
-        repository.create(city);
+    @ValidateRequest
+    public Region create(@Valid Region city) {
+        regionService.create(city);
         return city;
     }
 

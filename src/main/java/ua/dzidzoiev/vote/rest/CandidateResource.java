@@ -5,6 +5,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.security.rest.AuthToken;
+import ua.dzidzoiev.vote.service.CandidateService;
 import ua.dzidzoiev.vote.service.VotingService;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,27 +19,27 @@ import java.util.logging.Logger;
 /**
  * Created by midnight coder on 26-May-15.
  */
-@Path("/region/{region-id:[0-9][0-9]*}/candidate")
+@Path("/region/{region-code}/candidate")
 @Consumes("*/*")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
-@Api(value = "/region/{region-id:[0-9][0-9]*}/candidate", description = "Candidate resource to specific region")
-public class CandidateRestService {
+@Api(value = "/region/{region-code}/candidate", description = "Candidate resource to specific region")
+public class CandidateResource {
 
     @Inject
     private Logger log;
 
     @Inject
-    VotingService service;
+    private VotingService service;
 
     @Inject
-    private CandidateRepository repository;
+    private CandidateService candidateService;
 
     @GET
-    @Path("/{id:[0-9][0-9]*}")
-    @ApiOperation(value = "{id:[0-9][0-9]*}", notes = "Get candidate data by it`s ID")
-    public Candidate lookupCandidateById(@PathParam("id") long id) {
-        Candidate candidate = repository.findById(id);
+    @Path("/{reg-id}")
+    @ApiOperation(value = "{reg-id}", notes = "Get candidate data by it`s ID")
+    public Candidate lookupCandidateById(@PathParam("reg-id") String id) {
+        Candidate candidate = candidateService.findById(id);
         if (candidate == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -47,16 +48,16 @@ public class CandidateRestService {
 
     @GET
     @ApiOperation(value = "", notes = "Get all candidates in the region")
-    public List<Candidate> listAll(@PathParam("region-id") long id) {
-        return repository.getAllCandidatesInRegion(id);
+    public List<Candidate> listAll(@PathParam("region-code") String code) {
+        return candidateService.getAllCandidatesInRegion(code);
     }
 
     @POST
-    @Path("/{id:[0-9][0-9]*}/vote")
+    @Path("/{reg-id}/vote")
     @AuthToken
-    @ApiOperation(value = "{id:[0-9][0-9]*}/vote", notes = "Vote on some candidate. Note that vote can be made only once")
-    public Response vote(@PathParam("id") long candId) {
-        service.vote(candId);
+    @ApiOperation(value = "{reg-id}/vote", notes = "Vote on some candidate. Note that vote can be made only once")
+    public Response vote(@PathParam("reg-id") String candidateRegistrationId) {
+        service.vote(candidateRegistrationId);
         return null;
     }
 

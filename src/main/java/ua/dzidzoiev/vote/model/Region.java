@@ -3,6 +3,8 @@ package ua.dzidzoiev.vote.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
@@ -13,28 +15,29 @@ import java.util.List;
 @Entity
 @Table(name = "regions")
 public class Region {
+
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Long id;
+    private Long id;
 
     @Column
-    private
-    String name;
+    @NotNull
+    @Size(min = 1, max = 16)
+    private String name;
 
     @Column
-    private
-    String code;
+    @NotNull
+    @Size(min = 1, max = 3)
+    private String code;
 
     @JsonIgnore
     @OneToMany(mappedBy = "region")
-    private
-    List<Candidate> candidates;
+    private List<Candidate> candidates;
 
     @JsonIgnore
     @OneToMany(mappedBy = "region")
-    private
-    List<Voter> voters;
+    private List<Voter> voters;
 
     public Region() {
     }

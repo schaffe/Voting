@@ -2,19 +2,18 @@ package ua.dzidzoiev.vote.service;
 
 import org.picketlink.authorization.annotations.RolesAllowed;
 import org.picketlink.idm.model.basic.User;
+import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.data.VoterRepository;
 import ua.dzidzoiev.vote.model.Voter;
 import ua.dzidzoiev.vote.model.dto.AccountRegistration;
+import ua.dzidzoiev.vote.model.dto.auth.AuthLoginElement;
 import ua.dzidzoiev.vote.security.ApplicationRoles;
 import ua.dzidzoiev.vote.security.IdentityModelManager;
-import ua.dzidzoiev.vote.service.annotation.CurrentVoter;
-import ua.dzidzoiev.vote.service.annotation.Registered;
+import ua.dzidzoiev.vote.service.annotation.inject.CurrentVoter;
+import ua.dzidzoiev.vote.service.annotation.validation.Registered;
 
-import javax.annotation.Resource;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -30,8 +29,11 @@ public class AccountService {
     private VoterRepository voterRepository;
 
     @Inject
+    private RegionRepository regionRepository;
+
+    @Inject
     @Registered
-    Event<User> registrationEvent;
+    private Event<User> registrationEvent;
 
 //    @Resource
 //    private SessionContext context;
@@ -43,20 +45,32 @@ public class AccountService {
         return voterRepository.findByLoginName(user.getLoginName());
     }
 
-    public Voter registerVoter(AccountRegistration registrationData) {
+    public AuthLoginElement registerVoter(AccountRegistration registrationData) {
         Voter newVoter = new Voter();
 
-        newVoter.setLoginName(registrationData.getLoginName());
+        String loginName = registrationData.getLoginName();
+        if(loginName == null || loginName.isEmpty()) {
+            loginName = registrationData.getPersonalId();
+        }
+
+        newVoter.setLoginName(loginName);
         newVoter.setFirstName(registrationData.getFirstName());
         newVoter.setSurname(registrationData.getSurname());
         newVoter.setPersonalId(registrationData.getPersonalId());
+        newVoter.setRegion(regionRepository.findByCode(registrationData.getRegionCode()));
 
-        User user = identityModelManager.createAccount(registrationData);
+        AuthLoginElement userData = identityModelManager.createAccount(
+                registrationData.getFirstName(),
+                registrationData.getSurname(),
+                loginName,
+                registrationData.getPassword());
+        User user = identityModelManager.findByLoginName(userData.getUsername());
         identityModelManager.grantRole(user, ApplicationRoles.VOTER);
-        registrationEvent.fire(user);
+//        registrationEvent.fire(user);
+
         voterRepository.create(newVoter);
 
-        return newVoter;
+        return userData;
     }
 
     @RolesAllowed(ADMIN)

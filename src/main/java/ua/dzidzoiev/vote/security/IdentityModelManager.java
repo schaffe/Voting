@@ -31,10 +31,12 @@ import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 import ua.dzidzoiev.vote.model.dto.AccountRegistration;
+import ua.dzidzoiev.vote.model.dto.auth.AuthLoginElement;
 import ua.dzidzoiev.vote.security.token.JWSToken;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>This class provides an abstraction point to the Identity Management operations required by the application./p>
@@ -76,20 +78,33 @@ public class IdentityModelManager {
         return (User) account;
     }
 
-    public User createAccount(AccountRegistration request) {
-        if (!isPasswordValid(request.getPassword(), request.getPasswordConfirmation())) {
-            throw new IllegalArgumentException("{security.password.invalid}");
-        }
-
-        User newUser = new User(request.getLoginName());
-        newUser.setFirstName(request.getFirstName());
-        newUser.setLastName(request.getSurname());
+    /**
+     * Creates new account, sets new random password if @param password is null or empty
+     *
+     * @param firstname
+     * @param lastname
+     * @param loginName
+     * @param password
+     * @return user login name and optional: password (if created random one)
+     */
+    public AuthLoginElement createAccount(@NotNull String firstname, @NotNull String lastname, @NotNull String loginName, String password) {
+        User newUser = new User(loginName);
+        newUser.setFirstName(firstname);
+        newUser.setLastName(lastname);
 
         this.identityManager.add(newUser);
 
-        updatePassword(newUser, request.getPassword());
+        AuthLoginElement result = new AuthLoginElement();
+        result.setUsername(newUser.getLoginName());
 
-        return newUser;
+
+        if (password == null || password.isEmpty()) {
+            // TODO generateNewPassword
+            password = "password";
+        }
+        updatePassword(newUser, password);
+
+        return new AuthLoginElement(loginName, password);
     }
 
     public void removeUser(User user) {

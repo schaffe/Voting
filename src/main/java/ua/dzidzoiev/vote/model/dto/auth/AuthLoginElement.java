@@ -1,10 +1,16 @@
 package ua.dzidzoiev.vote.model.dto.auth;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class AuthLoginElement implements Serializable {
 
+    @NotNull
+    @Size(min = 3, max = 16)
     private String username;
+
+    @Size(max = 16)
     private String password;
 
     public AuthLoginElement(String username, String password) {

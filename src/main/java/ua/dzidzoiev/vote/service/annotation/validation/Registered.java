@@ -1,4 +1,4 @@
-package ua.dzidzoiev.vote.service.annotation;
+package ua.dzidzoiev.vote.service.annotation.validation;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
@@ -11,7 +11,7 @@ import static java.lang.annotation.ElementType.*;
  * Created by midnight coder on 06-Jul-15.
  */
 @Qualifier
-@Target({ TYPE, METHOD, FIELD, PARAMETER })
+@Target({ FIELD, PARAMETER })
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface CurrentVoter {
+public @interface Registered {
 }

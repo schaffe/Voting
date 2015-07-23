@@ -36,8 +36,8 @@ public class StatisticsService {
     VoteRepository voteRepository;
 
     @RolesAllowed(STATISTIC_VIEWER)
-    public  List<Statistics> getHotStats(long regionId) {
-        Region region = regionRepository.findById(regionId);
+    public  List<Statistics> getHotStats(String regionCode) {
+        Region region = regionRepository.findByCode(regionCode);
         List<Candidate> candidates = region.getCandidates();
         List<Statistics> statistics = new ArrayList<>();
 

@@ -1,6 +1,9 @@
 package ua.dzidzoiev.vote.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.util.Date;
 
 /**
@@ -9,24 +12,22 @@ import java.util.Date;
 @Entity
 @Table(name = "votes")
 public class Vote {
+
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "voter_id")
-    private
-    Voter voter;
+    private Voter voter;
 
     @ManyToOne
     @JoinColumn(name = "candidate_id")
-    private
-    Candidate candidate;
+    private Candidate candidate;
 
     @Column
-    private
-    Date date;
+    private Date date;
 
     public Vote() {
     }

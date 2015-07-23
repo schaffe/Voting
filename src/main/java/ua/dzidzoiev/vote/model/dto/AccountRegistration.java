@@ -22,6 +22,8 @@
 
 package ua.dzidzoiev.vote.model.dto;
 
+import ua.dzidzoiev.vote.service.annotation.validation.Email;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -46,12 +48,11 @@ public class AccountRegistration {
     private String password;
 
     @NotNull
-    @Size(min=3, max=16)
-    private String passwordConfirmation;
-
-    @NotNull
     @Size(min=2, max=2)
     private String regionCode;
+
+    @Email
+    private String email;
 
     public String getLoginName() {
         return loginName;
@@ -93,19 +94,19 @@ public class AccountRegistration {
         this.password = password;
     }
 
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
-
     public String getRegionCode() {
         return regionCode;
     }
 
     public void setRegionCode(String regionCode) {
         this.regionCode = regionCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
