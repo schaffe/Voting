@@ -19,11 +19,11 @@ import java.util.logging.Logger;
 /**
  * Created by midnight coder on 26-May-15.
  */
-@Path("/region/{region-code}/candidate")
+@Path("/regions/{region-code}/candidates")
 @Consumes("*/*")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
-@Api(value = "/region/{region-code}/candidate", description = "Candidate resource to specific region")
+@Api(value = "/regions/{region-code}/candidates", description = "Candidate resource to specific region")
 public class CandidateResource {
 
     @Inject
@@ -36,9 +36,9 @@ public class CandidateResource {
     private CandidateService candidateService;
 
     @GET
-    @Path("/{reg-id}")
-    @ApiOperation(value = "{reg-id}", notes = "Get candidate data by it`s ID")
-    public Candidate lookupCandidateById(@PathParam("reg-id") String id) {
+    @Path("/{registration-id}")
+    @ApiOperation(value = "{registration-id}", notes = "Get candidate data by it`s ID")
+    public Candidate lookupCandidateById(@PathParam("registration-id") String id) {
         Candidate candidate = candidateService.findById(id);
         if (candidate == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);

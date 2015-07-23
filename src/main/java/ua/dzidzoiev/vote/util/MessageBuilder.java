@@ -94,6 +94,11 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder entity(Object o) {
+        this.response.entity(o);
+        return this;
+    }
+
     public Response build() {
         return this.response.entity(this.messageData).build();
     }

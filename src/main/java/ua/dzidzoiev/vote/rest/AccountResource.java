@@ -8,6 +8,7 @@ import org.jboss.resteasy.spi.validation.ValidateRequest;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import ua.dzidzoiev.vote.model.Voter;
 import ua.dzidzoiev.vote.model.dto.AccountRegistration;
+import ua.dzidzoiev.vote.model.dto.auth.AuthLoginElement;
 import ua.dzidzoiev.vote.service.AccountService;
 import ua.dzidzoiev.vote.util.MessageBuilder;
 
@@ -42,8 +43,8 @@ public class AccountResource {
     })
     @ValidateRequest
     public Response registerAccount(@Valid AccountRegistration payload) {
-        accountService.registerVoter(payload);
-        return MessageBuilder.ok().message("{success.log_in}").build();
+        AuthLoginElement authLoginElement = accountService.registerVoter(payload);
+        return Response.ok(authLoginElement,APPLICATION_JSON).build();
     }
 
     @DELETE
