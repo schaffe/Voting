@@ -8,10 +8,13 @@ import ua.dzidzoiev.vote.model.dto.AccountRegistration;
 import ua.dzidzoiev.vote.security.ApplicationRoles;
 import ua.dzidzoiev.vote.security.IdentityModelManager;
 import ua.dzidzoiev.vote.service.annotation.CurrentVoter;
+import ua.dzidzoiev.vote.service.annotation.Registered;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -26,8 +29,12 @@ public class AccountService {
     @Inject
     private VoterRepository voterRepository;
 
-    @Resource
-    private SessionContext context;
+    @Inject
+    @Registered
+    Event<User> registrationEvent;
+
+//    @Resource
+//    private SessionContext context;
 
     @Produces
     @CurrentVoter
@@ -44,14 +51,10 @@ public class AccountService {
         newVoter.setSurname(registrationData.getSurname());
         newVoter.setPersonalId(registrationData.getPersonalId());
 
+        User user = identityModelManager.createAccount(registrationData);
+        identityModelManager.grantRole(user, ApplicationRoles.VOTER);
+        registrationEvent.fire(user);
         voterRepository.create(newVoter);
-
-        try {
-            User user = identityModelManager.createAccount(registrationData);
-            identityModelManager.grantRole(user, ApplicationRoles.VOTER);
-        } catch (Exception e) {
-            context.setRollbackOnly();
-        }
 
         return newVoter;
     }
@@ -61,6 +64,13 @@ public class AccountService {
         User u = getUser(voter);
         identityModelManager.removeUser(u);
 
+        voterRepository.remove(voter);
+    }
+
+    @RolesAllowed(ADMIN)
+    public void removeVoter(String username) {
+        identityModelManager.removeUser(username);
+        Voter voter = voterRepository.findByLoginName(username);
         voterRepository.remove(voter);
     }
 
@@ -77,5 +87,4 @@ public class AccountService {
     private User getUser(Voter voter) {
         return identityModelManager.findByLoginName(voter.getLoginName());
     }
-
 }

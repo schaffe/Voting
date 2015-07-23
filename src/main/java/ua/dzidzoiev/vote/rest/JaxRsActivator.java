@@ -38,7 +38,8 @@ public class JaxRsActivator extends Application {
     public JaxRsActivator() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
-        beanConfig.setBasePath("http://voting-schaffedev.rhcloud.com/rest");
+        beanConfig.setBasePath("http://localhost:8080/InteractivePollWFB/rest");
+//        beanConfig.setBasePath("http://voting-schaffedev.rhcloud.com/rest");
         beanConfig.setResourcePackage("ua.dzidzoiev.vote.rest");
         beanConfig.setScan(true);
     }
@@ -62,6 +63,7 @@ public class JaxRsActivator extends Application {
         resources.add(AuthResource.class);
         resources.add(CandidateRestService.class);
         resources.add(RegionRestService.class);
+        resources.add(AccountResource.class);
     }
 
     private void addRestFilterClasses(Set<Class<?>> resources) {

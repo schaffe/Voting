@@ -65,7 +65,7 @@ public class IdentityModelManager {
 
     public User findByLoginName(String loginName) {
         if (loginName == null) {
-            throw new IllegalArgumentException("Invalid login name.");
+            throw new IllegalArgumentException("{security.login.invalid}");
         }
 
         return BasicModel.getUser(identityManager, loginName);
@@ -77,8 +77,8 @@ public class IdentityModelManager {
     }
 
     public User createAccount(AccountRegistration request) {
-        if (!request.isValid()) {
-            throw new IllegalArgumentException("Insufficient information.");
+        if (!isPasswordValid(request.getPassword(), request.getPasswordConfirmation())) {
+            throw new IllegalArgumentException("{security.password.invalid}");
         }
 
         User newUser = new User(request.getLoginName());
@@ -93,8 +93,24 @@ public class IdentityModelManager {
     }
 
     public void removeUser(User user) {
-        //TODO test
-        this.identityManager.remove(user);
+        identityManager.remove(user);
+
+//        User removedUserInstance = identityManager.getUser("admin");
+//
+//        assertNull(removedUserInstance);
+    }
+
+    public void removeUser(String username) {
+        User user = findByLoginName(username);
+        if (user != null) {
+            identityManager.remove(user);
+        } else {
+            throw new IllegalArgumentException("{security.username.no_such_user}");
+        }
+
+//        User removedUserInstance = identityManager.getUser("admin");
+//
+//        assertNull(removedUserInstance);
     }
 
     public void updatePassword(Account account, String password) {
@@ -113,5 +129,9 @@ public class IdentityModelManager {
 
     private Token issueToken(Account account) {
         return this.tokenProvider.issue(account);
+    }
+
+    private boolean isPasswordValid(String password, String passwordConfirmation) {
+        return password.equals(passwordConfirmation);
     }
 }

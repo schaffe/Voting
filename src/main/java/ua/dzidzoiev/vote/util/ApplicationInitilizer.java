@@ -16,7 +16,7 @@ import javax.inject.Inject;
 /**
  * Created by midnight coder on 15-Jul-15.
  */
-@Startup
+//@Startup
 @Singleton
 @DependsOn("SecurityInitializer")
 public class ApplicationInitilizer {

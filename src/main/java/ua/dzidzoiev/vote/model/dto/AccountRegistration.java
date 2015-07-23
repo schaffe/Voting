@@ -22,19 +22,35 @@
 
 package ua.dzidzoiev.vote.model.dto;
 
-/**
- * @author Pedro Silva
- */
-public class AccountRegistration {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+public class AccountRegistration {
+//TODO change size
+    @Size(min=3, max=20)
     private String loginName;
+
+    @NotNull
+    @Size(min=1, max=16)
     private String firstName;
+
+    @NotNull
+    @Size(min=1, max=16)
     private String surname;
 
-    //TODO optional fields (?)
+    @NotNull
+    @Size(min=6, max=20)
     private String personalId;
+
+    @Size(min=3, max=16)
     private String password;
+
+    @NotNull
+    @Size(min=3, max=16)
     private String passwordConfirmation;
+
+    @NotNull
+    @Size(min=2, max=2)
     private String regionCode;
 
     public String getLoginName() {
@@ -91,9 +107,5 @@ public class AccountRegistration {
 
     public void setRegionCode(String regionCode) {
         this.regionCode = regionCode;
-    }
-
-    public boolean isValid() {
-        return this.firstName != null && this.surname != null && this.personalId != null && this.password != null && this.passwordConfirmation != null;
     }
 }

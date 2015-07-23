@@ -30,12 +30,11 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.logging.Logger;
 
-
-@Path("/region")
+@Path("/regions")
 @Consumes("*/*")
 @Produces(MediaType.APPLICATION_JSON)
 @RequestScoped
-@Api(value = "/region", description = "Region resource")
+@Api(value = "/regions", description = "Region resource")
 public class RegionRestService {
     @Inject
     private Logger log;
@@ -54,10 +53,10 @@ public class RegionRestService {
     }
 
     @GET
-    @Path("/{id:[0-9][0-9]*}/stats")
+    @Path("/{region-id:[0-9][0-9]*}/stats")
     @AuthToken
-    @ApiOperation(value = "/{id:[0-9][0-9]*}/stats", notes = "Get statistics related to some region")
-    public List<Statistics> getStats(@PathParam("id") long regionId) {
+    @ApiOperation(value = "/{region-id}/stats", notes = "Get statistics related to some region")
+    public List<Statistics> getStats(@PathParam("region-id") long regionId) {
         return statisticsService.getHotStats(regionId);
     }
 

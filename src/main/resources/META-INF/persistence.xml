@@ -25,10 +25,10 @@
            data source, this example data source is just for development and testing! -->
         <!-- The datasource is deployed as WEB-INF/Voting-ds.xml, you
            can find it in the source at src/main/webapp/WEB-INF/Voting-ds.xml -->
-        <jta-data-source>java:jboss/datasources/voting</jta-data-source>
+        <jta-data-source>java:jboss/datasources/XA-Voting</jta-data-source>
         <properties>
             <!-- Properties for Hibernate -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
             <property name="hibernate.show_sql" value="false"/>
         </properties>
     </persistence-unit>
@@ -37,7 +37,7 @@
            data source, this example data source is just for development and testing! -->
         <!-- The datasource is deployed as WEB-INF/picketlink-quickstart-ds.xml, you
            can find it in the source at src/main/webapp/WEB-INF/picketlink-quickstart-ds.xml -->
-        <jta-data-source>java:jboss/datasources/PicketLinkSecurityDS</jta-data-source>
+        <jta-data-source>java:jboss/datasources/XA-PicketLinkSecurityDS</jta-data-source>
 
         <class>org.picketlink.idm.jpa.model.sample.simple.AttributedTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity</class>
@@ -53,7 +53,7 @@
 
         <properties>
             <!-- Properties for Hibernate -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
             <property name="hibernate.show_sql" value="false" />
         </properties>
     </persistence-unit>

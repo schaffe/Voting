@@ -1,6 +1,7 @@
 package ua.dzidzoiev.vote.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,34 +14,30 @@ import java.io.Serializable;
 public class Voter implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Long id;
+    private Long id;
 
     @Column
-    private
-    String firstName;
+    private String firstName;
 
     @Column
-    private
-    String surname;
+    private String surname;
 
-    @Column
-    private
-    String personalId;
+    @Column(unique = true, nullable = false)
+    @NotNull
+    private String personalId;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "region_id")
-    private
-    Region region;
-
     @JsonIgnore
+    private Region region;
+
     @OneToOne(mappedBy = "voter")
-    private
-    Vote vote;
-
     @JsonIgnore
-    @Column
+    private Vote vote;
+
+    @Column(unique = true, nullable = false)
+    @NotNull
+    @JsonIgnore
     private String loginName;
 
     public Voter() {

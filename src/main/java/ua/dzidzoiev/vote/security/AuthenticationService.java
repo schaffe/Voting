@@ -22,9 +22,12 @@ import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.credential.Token;
 import org.picketlink.idm.credential.TokenCredential;
 import org.picketlink.idm.model.Account;
+import org.picketlink.idm.model.basic.User;
 import ua.dzidzoiev.vote.security.token.JWSToken;
+import ua.dzidzoiev.vote.service.annotation.Registered;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
 import java.security.GeneralSecurityException;
@@ -83,6 +86,10 @@ public class AuthenticationService {
 
         this.identity.logout();
     }
+
+//    public void loginRegisteredUser(@Observes @Registered User user) {
+//        //TODO
+//    }
 
     private Token issueToken(Account account) {
         return this.tokenProvider.issue(account);

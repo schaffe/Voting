@@ -50,6 +50,14 @@ public class MessageBuilder {
         return new MessageBuilder(Response.ok());
     }
 
+    public static MessageBuilder noContent() {
+        return new MessageBuilder(Response.noContent());
+    }
+
+    public static MessageBuilder notImplemented() {
+        return new MessageBuilder(Response.status(Response.Status.NOT_IMPLEMENTED));
+    }
+
     public static MessageBuilder authenticationRequired() {
         return new MessageBuilder(Response.status(Response.Status.UNAUTHORIZED));
     }
