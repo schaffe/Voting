@@ -16,6 +16,7 @@ package ua.dzidzoiev.vote.rest;/*
  */
 
 import com.wordnik.swagger.jaxrs.config.BeanConfig;
+import ua.dzidzoiev.vote.rest.exception.AccessDeniedExceptionMapper;
 import ua.dzidzoiev.vote.rest.exception.RuntimeExceptionMapper;
 import ua.dzidzoiev.vote.security.rest.CORSFilter;
 import ua.dzidzoiev.vote.security.rest.TokenFilter;
@@ -66,6 +67,7 @@ public class JaxRsActivator extends Application {
         resources.add(CandidateResource.class);
         resources.add(RegionResource.class);
         resources.add(AccountResource.class);
+        resources.add(TestResource.class);
     }
 
     private void addRestFilterClasses(Set<Class<?>> resources) {
@@ -75,5 +77,6 @@ public class JaxRsActivator extends Application {
 
     private void addRestExceptionMappers(Set<Class<?>> resources) {
         resources.add(RuntimeExceptionMapper.class);
+        resources.add(AccessDeniedExceptionMapper.class);
     }
 }

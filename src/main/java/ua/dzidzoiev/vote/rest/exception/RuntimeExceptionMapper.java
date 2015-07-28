@@ -15,7 +15,12 @@ public class RuntimeExceptionMapper implements ExceptionMapper<java.lang.Runtime
     @Override
     public Response toResponse(java.lang.RuntimeException arg0) {
         Throwable cause = ExceptionUtils.getRootCause(arg0);
-        return MessageBuilder.badRequest().message(cause.getMessage()).build();
-//        return Response.status(Response.Status.BAD_REQUEST).entity(cause.getLocalizedMessage()).build();
+        MessageBuilder messageBuilder;
+        if(cause instanceof org.apache.deltaspike.security.api.authorization.AccessDeniedException) {
+            messageBuilder = MessageBuilder.accessDenied();
+        } else {
+            messageBuilder = MessageBuilder.badRequest().message(cause.getMessage());
+        }
+        return messageBuilder.build();
     }
 }
