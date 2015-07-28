@@ -1,9 +1,8 @@
 package ua.dzidzoiev.vote.service;
 
-import org.picketlink.authorization.annotations.RolesAllowed;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.model.Candidate;
-import ua.dzidzoiev.vote.security.ApplicationRoles;
+import ua.dzidzoiev.vote.security.annotations.Admin;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -26,7 +25,7 @@ public class CandidateService {
         return candidateRepository.findByRegId(regId);
     }
 
-    @RolesAllowed(ApplicationRoles.ADMIN)
+    @Admin
     public void update(Candidate c) {
         candidateRepository.update(c);
     }
@@ -39,12 +38,12 @@ public class CandidateService {
         return candidateRepository.getAllCandidatesInRegion(regionCode);
     }
 
-    @RolesAllowed(ApplicationRoles.ADMIN)
+    @Admin
     public void create(Candidate c) {
         candidateRepository.create(c);
     }
 
-    @RolesAllowed(ApplicationRoles.ADMIN)
+    @Admin
     public void remove(Candidate c) {
         candidateRepository.remove(c);
     }

@@ -2,8 +2,12 @@ package ua.dzidzoiev.vote.model.dto.auth;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
+@XmlRootElement
+@XmlType(propOrder = {"username", "password"})
 public class AuthLoginElement implements Serializable {
 
     @NotNull

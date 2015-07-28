@@ -1,12 +1,12 @@
 package ua.dzidzoiev.vote.service;
 
-import org.picketlink.authorization.annotations.RolesAllowed;
 import ua.dzidzoiev.vote.data.CandidateRepository;
 import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.data.VoteRepository;
 import ua.dzidzoiev.vote.model.Candidate;
 import ua.dzidzoiev.vote.model.Region;
 import ua.dzidzoiev.vote.model.dto.Statistics;
+import ua.dzidzoiev.vote.security.annotations.StatisticsViewer;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,8 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ua.dzidzoiev.vote.security.ApplicationRoles.*;
 
 /**
  * Created by midnight coder on 27-May-15.
@@ -35,7 +33,7 @@ public class StatisticsService {
     @Inject
     VoteRepository voteRepository;
 
-    @RolesAllowed(STATISTIC_VIEWER)
+    @StatisticsViewer
     public  List<Statistics> getHotStats(String regionCode) {
         Region region = regionRepository.findByCode(regionCode);
         List<Candidate> candidates = region.getCandidates();

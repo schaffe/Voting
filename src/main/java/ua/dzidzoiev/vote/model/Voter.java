@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "voters")
+@XmlRootElement
 public class Voter implements Serializable {
 
     @Id
@@ -28,11 +31,11 @@ public class Voter implements Serializable {
 
     @Column(unique = true, nullable = false)
     @NotNull
+    @JsonIgnore
     private String personalId;
 
     @ManyToOne
     @JoinColumn(name = "region_id")
-    @JsonIgnore
     private Region region;
 
     @OneToOne(mappedBy = "voter")

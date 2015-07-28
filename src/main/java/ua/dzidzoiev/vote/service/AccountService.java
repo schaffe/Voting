@@ -1,6 +1,6 @@
 package ua.dzidzoiev.vote.service;
 
-import org.picketlink.authorization.annotations.RolesAllowed;
+import org.picketlink.authorization.annotations.LoggedIn;
 import org.picketlink.idm.model.basic.User;
 import ua.dzidzoiev.vote.data.RegionRepository;
 import ua.dzidzoiev.vote.data.VoterRepository;
@@ -9,6 +9,7 @@ import ua.dzidzoiev.vote.model.dto.AccountRegistration;
 import ua.dzidzoiev.vote.model.dto.auth.AuthLoginElement;
 import ua.dzidzoiev.vote.security.ApplicationRoles;
 import ua.dzidzoiev.vote.security.IdentityModelManager;
+import ua.dzidzoiev.vote.security.annotations.Admin;
 import ua.dzidzoiev.vote.service.annotation.inject.CurrentVoter;
 import ua.dzidzoiev.vote.service.annotation.validation.Registered;
 
@@ -17,7 +18,7 @@ import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import static ua.dzidzoiev.vote.security.ApplicationRoles.*;
+import static ua.dzidzoiev.vote.security.ApplicationRoles.ADMIN;
 
 @Stateless
 public class AccountService {
@@ -43,6 +44,10 @@ public class AccountService {
     public Voter getCurrentVoter() {
         User user = identityModelManager.getLoggedInUser();
         return voterRepository.findByLoginName(user.getLoginName());
+    }
+
+    public Voter getVoter(String username) {
+        return voterRepository.findByLoginName(username);
     }
 
     public AuthLoginElement registerVoter(AccountRegistration registrationData) {
@@ -73,27 +78,28 @@ public class AccountService {
         return userData;
     }
 
-    @RolesAllowed(ADMIN)
+    @Admin
     public void removeVoter(Voter voter) {
         User u = getUser(voter);
         identityModelManager.removeUser(u);
-
         voterRepository.remove(voter);
     }
 
-    @RolesAllowed(ADMIN)
-    public void removeVoter(String username) {
+    @LoggedIn
+    public void removeVoterSelf() {
+        User currentUser = identityModelManager.getLoggedInUser();
+        String username = currentUser.getLoginName();
         identityModelManager.removeUser(username);
         Voter voter = voterRepository.findByLoginName(username);
         voterRepository.remove(voter);
     }
 
-    @RolesAllowed(ADMIN)
+    @Admin
     public void grantAdminRole(Voter voter) {
-        identityModelManager.grantRole(getUser(voter), ApplicationRoles.ADMIN);
+        identityModelManager.grantRole(getUser(voter), ADMIN);
     }
 
-    @RolesAllowed(ADMIN)
+    @Admin
     public void grantStatisticsViewerRole(Voter voter) {
         identityModelManager.grantRole(getUser(voter), ApplicationRoles.STATISTIC_VIEWER);
     }
