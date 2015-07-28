@@ -30,7 +30,6 @@ import org.picketlink.idm.model.Account;
 import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
-import ua.dzidzoiev.vote.model.dto.AccountRegistration;
 import ua.dzidzoiev.vote.model.dto.auth.AuthLoginElement;
 import ua.dzidzoiev.vote.security.token.JWSToken;
 
@@ -101,10 +100,11 @@ public class IdentityModelManager {
         if (password == null || password.isEmpty()) {
             // TODO generateNewPassword
             password = "password";
+            result.setPassword(password);
         }
         updatePassword(newUser, password);
 
-        return new AuthLoginElement(loginName, password);
+        return result;
     }
 
     public void removeUser(User user) {

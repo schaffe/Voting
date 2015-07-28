@@ -42,10 +42,11 @@ public class IdentityManagementConfiguration {
         SecurityConfigurationBuilder builder = event.getBuilder();
 
         builder
+//            .identity()
+//                .stateless()
             .idmConfig()
                 .named("default.config")
-                    .stores()
-
+                .stores()
                         .jpa()
 //                            .supportType(MyUser.class)
                             .supportAllFeatures();
